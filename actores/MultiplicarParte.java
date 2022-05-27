@@ -12,14 +12,12 @@ public class MultiplicarParte extends AbstractActor {
         return ReceiveBuilder.create()
                 .match(TaskCalcElement.class, t -> {
                     t.calcValue();
-
-                    ActorSystem actorSystem = ActorSystem.create();
-                    ActorRef taskActor = actorSystem.actorOf(MultiplicarMatrices.props(), "MultiplicarMatrices");
-
-                    sender().tell(t, taskActor);
+                    sender().tell(t, self());
                 })
-
                 .build();
     }
 
+    public static Props props(){
+        return Props.create(MultiplicarParte.class);
+    }
 }

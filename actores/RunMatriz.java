@@ -3,6 +3,7 @@ package trabajo_grupal.actores;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.japi.pf.ReceiveBuilder;
 
 public class RunMatriz extends AbstractActor {
@@ -19,13 +20,10 @@ public class RunMatriz extends AbstractActor {
         };
         Matriz m2 = new Matriz(mat2Values);
 
-        Matriz result = m1.multiply(m2);
+        ActorSystem actorSystem = ActorSystem.create("system");
+        ActorRef taskActor = actorSystem.actorOf(RunMatriz.props(), "RunMatriz");
+        taskActor.tell(new DosGuardarMatrices(m1,m2), ActorRef.noSender());
 
-        System.out.println(result);
-
-        ActorSystem actorSystem = ActorSystem.create();
-        ActorRef taskActor = actorSystem.actorOf(TaskCalcElement.props(), "TaskCalcElement");
-        taskActor.tell(new DosGuardarMatrices(m1,m2));
     }
 
     private static void printArray(int[] arr, boolean vertical) {
@@ -34,5 +32,21 @@ public class RunMatriz extends AbstractActor {
         for(var i = 0; i < arr.length; i ++) {
             System.out.printf("%d%s", arr[i], escapeSquence);
         }
+    }
+
+    @Override
+    public Receive createReceive() {
+        return ReceiveBuilder.create()
+                .match(Matriz.class, m -> System.out.println(m.toString()))
+                .match(DosGuardarMatrices.class, dm -> {
+                    ActorSystem actorSystem = ActorSystem.create("RunMatriz");
+                    ActorRef taskActor = actorSystem.actorOf(MultiplicarMatrices.props(), "MultiplicarMatrices");
+                    taskActor.tell(dm, self());
+                })
+                .build();
+    }
+
+    public static Props props(){
+        return Props.create(RunMatriz.class);
     }
 }

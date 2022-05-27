@@ -18,7 +18,7 @@ public class TaskCalcElement{
         this.cloIndex = cloIndex;
     }
 
-    public int calcValue(){
+    public void calcValue(){
         int[] row = m1.getRow(rowIndex);
         int[] col = m2.getColumn(cloIndex);
 
@@ -26,7 +26,7 @@ public class TaskCalcElement{
         for (var i=0; i<row.length;i++){
             aux += row[i] * col[i];
         }
-        return aux;
+        element = aux;
     }
 
     public int getRowIndex() {

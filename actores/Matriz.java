@@ -58,7 +58,7 @@ public class Matriz {
             throw new IllegalArgumentException("No se puede multiplicar");
         }
     }
-
+/*
     public Matriz multiplyWithThreads(Matriz mat2) throws InterruptedException {
         List<TaskCalcElement> threads;
         if (values.length == mat2.values[0].length){
@@ -72,8 +72,6 @@ public class Matriz {
                 }
             }
 
-            SetWaitThreads(threads);
-
             for (var t: threads){
                 output[t.getRowIndex()][t.getCloIndex()] = t.getElement();
             }
@@ -82,13 +80,7 @@ public class Matriz {
             throw new IllegalArgumentException("No se puede multiplicar las matrices.");
         }
     }
-
-    private void SetWaitThreads(List<TaskCalcElement> threads) throws InterruptedException{
-        for (var t: threads){
-            t.join();
-        }
-    }
-
+*/
     private int calcValue (int[] row, int[] col) {
         int element = 0;
         for(var i = 0; i < row.length; i ++ ) {
